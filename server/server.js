@@ -9,9 +9,12 @@ app.use(express.json());
 
 app.post('/login', (req, res) => {
   let user = req.body
-  users.find(e => {
-    e.emailPhone === user.emailPhone ? res.send('true') : res.send(`user doesn't exist`);
-  })
+  let exist = users.filter(e => e.emailPhone === user.emailPhone)
+
+  if (exist.length > 0) {
+    res.status(200).json({ status: 'true' })
+  }
+  else res.status(503).json({ status: 'false' })
 });
 
 app.post('/register', (req, res) => {

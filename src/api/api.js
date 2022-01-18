@@ -1,22 +1,23 @@
-export async function registerUser(credentials) {
-  return fetch('http://localhost:8080/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(credentials)
-  })
-    .then(data => data.json())
+class ApiService {
+  async makeRequest(url = '', method, body) {
+    return await fetch('http://localhost:8080' + url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    })
+      .then(data => data.json())
+  }
+
+  getUser(body) {
+    return this.makeRequest('/login', 'POST', body)
+  }
+
+  setUser(body) {
+    return this.makeRequest('/register', 'POST', body)
+  }
 }
 
-export async function loginUser(credentials) {
-  return fetch('http://localhost:8080/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(credentials)
-  })
-    .then(data => data.json())
-}
 
+export const apiService = new ApiService()

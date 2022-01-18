@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, FlexBox, Title, Text } from '../../ui';
 import { Button, Form } from 'react-bootstrap';
-import { loginUser } from '../../api/api';
+import { apiService } from '../../api/api';
 
 
 
@@ -11,12 +11,12 @@ export default function Login({ setToken }) {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    const token = await loginUser({
+    const res = await apiService.getUser({
       emailPhone: user.emailPhone,
       password: user.password
     });
-    if (token) {
-      setToken(token)
+    if (res.status === 'true') {
+      setToken(true)
     }
   }
 

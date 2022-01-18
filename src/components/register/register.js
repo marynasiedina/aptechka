@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import { Box, FlexBox, Title, Text } from '../../ui';
-import { registerUser } from '../../api/api';
+import { apiService } from '../../api/api';
 
 export default function Register() {
-  let navigate = useNavigate()
 
   const [user, setUser] = useState({ name: '', emailPhone: '', password: '' })
+  let navigate = useNavigate()
 
   const handleSubmit = async event => {
     event.preventDefault()
-    const res = await registerUser({
+    const res = await apiService.setUser({
       username: user.name,
       emailPhone: user.emailPhone,
       password: user.password
     });
+
     if (res.status === 'created') {
       navigate('/login')
     }
