@@ -1,7 +1,7 @@
 import React from 'react';
-import { LinkContainer } from 'react-router-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap';
 import { Button } from 'react-bootstrap';
-import { Box, FlexBox, Title } from '../../ui'
+import { Box, FlexBox, Title } from '../../ui';
 
 export default function Main() {
   return (

@@ -1,19 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
-import { Box, FlexBox, Title, Text } from '../../ui'
-
-async function registerUser(credentials) {
-  return fetch('http://localhost:8080/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(credentials)
-  })
-    .then(data => data.json())
-}
-
+import { Box, FlexBox, Title, Text } from '../../ui';
+import { registerUser } from '../../api/api';
 
 export default function Register() {
   let navigate = useNavigate()
@@ -22,13 +11,14 @@ export default function Register() {
 
   const handleSubmit = async event => {
     event.preventDefault()
-    const token = await registerUser({
+    const res = await registerUser({
       username: user.name,
       emailPhone: user.emailPhone,
       password: user.password
     });
-    console.log(token)
-    navigate('/login')
+    if (res.status === 'created') {
+      navigate('/login')
+    }
   };
 
   return (

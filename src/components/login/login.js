@@ -1,18 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, FlexBox, Title, Text } from '../../ui'
+import { Box, FlexBox, Title, Text } from '../../ui';
 import { Button, Form } from 'react-bootstrap';
-
-async function loginUser(credentials) {
-  return fetch('http://localhost:8080/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(credentials)
-  })
-    .then(data => data.json())
-}
+import { loginUser } from '../../api/api';
 
 
 
@@ -25,9 +15,10 @@ export default function Login({ setToken }) {
       emailPhone: user.emailPhone,
       password: user.password
     });
-    setToken(token);
+    if (token) {
+      setToken(token)
+    }
   }
-  console.log('render')
 
   return (
     <FlexBox

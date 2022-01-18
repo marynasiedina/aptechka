@@ -1,8 +1,9 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { Box, FlexBox, Title } from '../../ui'
+import { Box, FlexBox, Title } from '../../ui';
 
 export default function Dashboard({ setToken }) {
+
   return (
     <FlexBox
       width='100%'
