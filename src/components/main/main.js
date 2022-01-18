@@ -13,8 +13,8 @@ export default function Main() {
     >
       <Box texAlign='center'>
         <Title>APTECHKA</Title>
-        <LinkContainer to='/login'><Button className='mx-1' >Log in</Button></LinkContainer>
-        <LinkContainer to='/register'><Button className='mx-1' variant='secondary'>Register</Button></LinkContainer>
+        <LinkContainer to='/login'><Button className='mx-2' >Log in</Button></LinkContainer>
+        <LinkContainer to='/register'><Button className='mx-2' variant='secondary'>Register</Button></LinkContainer>
       </Box>
     </FlexBox>
   )

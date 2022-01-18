@@ -3,17 +3,31 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import { Box, FlexBox, Title, Text } from '../../ui'
 
+async function registerUser(credentials) {
+  return fetch('http://localhost:8080/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials)
+  })
+    .then(data => data.json())
+}
+
+
 export default function Register() {
-  const [validated, setValidated] = useState(false);
   let navigate = useNavigate()
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    setValidated(true);
+  const [user, setUser] = useState({ name: '', emailPhone: '', password: '' })
+
+  const handleSubmit = async event => {
+    event.preventDefault()
+    const token = await registerUser({
+      username: user.name,
+      emailPhone: user.emailPhone,
+      password: user.password
+    });
+    console.log(token)
     navigate('/login')
   };
 
@@ -28,13 +42,14 @@ export default function Register() {
       <Box p='30px' width={350} border='2px solid #adb5bd' borderRadius='10px' >
         <Title textAlign='center' mb='30px'>REGISTER</Title>
         <Link to='/'><Text mt={15} textDecoration='none'>Back to home</Text></Link>
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <Form.Floating className='mb-3'>
             <Form.Control
               required
               id='name'
               type='text'
               placeholder='Full name'
+              onChange={e => { setUser({ ...user, name: e.target.value }) }}
             />
             <label htmlFor='name'>Full name</label>
             <Form.Control.Feedback type='invalid'>
@@ -47,6 +62,7 @@ export default function Register() {
               id='email'
               type='email'
               placeholder='name@example.com'
+              onChange={e => { setUser({ ...user, emailPhone: e.target.value }) }}
             />
             <label htmlFor='email'>Email address</label>
             <Form.Control.Feedback type='invalid'>
@@ -59,6 +75,7 @@ export default function Register() {
               id='password'
               type='password'
               placeholder='Password'
+              onChange={e => { setUser({ ...user, password: e.target.value }) }}
             />
             <label htmlFor='password'>Password</label>
             <Form.Control.Feedback type='invalid'>

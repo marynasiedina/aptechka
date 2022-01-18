@@ -1,22 +1,33 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Box, FlexBox, Title, Text } from '../../ui'
 import { Button, Form } from 'react-bootstrap';
 
-export default function Login({ setToken }) {
-  const [validated, setValidated] = useState(false);
-  let navigate = useNavigate()
+async function loginUser(credentials) {
+  return fetch('http://localhost:8080/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials)
+  })
+    .then(data => data.json())
+}
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    setValidated(true);
-    setToken(true)
-    navigate('/dashboard')
-  };
+
+
+export default function Login({ setToken }) {
+  const [user, setUser] = useState({ emailPhone: '', password: '' })
+
+  const handleSubmit = async event => {
+    event.preventDefault();
+    const token = await loginUser({
+      emailPhone: user.emailPhone,
+      password: user.password
+    });
+    setToken(token);
+  }
+  console.log('render')
 
   return (
     <FlexBox
@@ -29,13 +40,14 @@ export default function Login({ setToken }) {
       <Box p='30px' width={350} border='2px solid #adb5bd' borderRadius='10px' >
         <Title textAlign='center' mb='30px'>LOG IN</Title>
         <Link to='/'><Text mt={15} textDecoration='none'>Back to home</Text></Link>
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <Form.Floating className='mb-3'>
             <Form.Control
               required
               id='email'
               type='email'
               placeholder='name@example.com'
+              onChange={e => { setUser({ ...user, emailPhone: e.target.value }) }}
             />
             <label htmlFor='email'>Email address</label>
             <Form.Control.Feedback type='invalid'>
@@ -48,6 +60,7 @@ export default function Login({ setToken }) {
               id='password'
               type='password'
               placeholder='Password'
+              onChange={e => { setUser({ ...user, password: e.target.value }) }}
             />
             <label htmlFor='password'>Password</label>
             <Form.Control.Feedback type='invalid'>
